@@ -22,7 +22,8 @@ def on_startup():
         "hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd \
         DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
-        "waybar",
+        "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+	"waybar",
     )
 
     for service in init_service:
