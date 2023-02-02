@@ -1,21 +1,28 @@
 from __future__ import annotations
 from typing import Callable, Any
-import logging
 import os
-from pywm import PYWM_MOD_LOGO
+import pwd
+import time
+import logging
 
+from newm.layout import Layout
+from newm.helper import BacklightManager, WobRunner, PaCtl
+
+from pywm import (
+    PYWM_MOD_LOGO,
+    PYWM_MOD_ALT
+)
+
+logger = logging.getLogger(__name__)
 
 def on_startup():
     init_service = (
-        "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
         "systemctl --user import-environment \
         DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
         "hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd \
         DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
         "waybar",
-        
-        
     )
 
     for service in init_service:
@@ -97,10 +104,14 @@ background = {
     'time_scale': 0.0,
     'anim': False,
 }
-
+energy = {
+    'idle_callback': lambda event: "idle",
+    'idle_times': 
+    'enable_unlock_command': True
+    'suspend_command': "systemctl suspend",
+}
 anim_time = .25
 blend_time = 0.5
-term = 'alacritty'
 menu = 'wofi --show drun'
 wlogout = 'wlogout'
 
@@ -113,7 +124,7 @@ def key_bindings(layout: Layout) -> list[tuple[str, Callable[[], Any]]]:
         ("L-d", lambda: os.system(f"{menu} &")),
         ("L-x", lambda: os.system(f"{wlogout} &")),
 
-        ("L-Return", lambda: os.system(f"{term} &")),
+        ("L-Return", lambda: os.system("alacritty &")),
 
 		#Управление фокусом
         ("L-Left", lambda: layout.move(-1, 0)),
@@ -175,7 +186,10 @@ gestures = {
 swipe = {'gesture_factor': 3}
 
 panels = {
-    "bar": {
+    'lock': {
+        'cmd': 'alacritty -e newm-panel-basic lock', 
+ },
+     "bar": {
         "cmd": "waybar",
         "visible_normal": True,
         "visible_fullscreen": True,
