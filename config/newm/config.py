@@ -178,7 +178,8 @@ panels = {
 }
 energy = {
     'idle_callback': lambda event: "idle",
-    'idle_times': [60,1000,1500],
+    'idle_times': [120, 1500, 2000],
+    'suspend_command': "systemctl suspend",
     'enable_unlock_command': True,
     #'suspend_command': "systemctl suspend",
 }
